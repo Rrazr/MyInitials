@@ -1,8 +1,7 @@
 // MyInitials.cpp
-// Edited by: (PUT YOUR NAME HERE, and the DATE)
+// Edited by: Ryan Ong on 12/3/2023
 //
 // A program that draws my initials on the screen
-// Press any key to quit.
 
 #include "graphics.h"
 #include "cmath"
@@ -23,7 +22,6 @@ void animateO() {
 		for (int i = 10; i <= 350; i += 10) {
 			x1 = 380, x2 = 620;
 			while (x1 != x2) {
-				//cout << x1 << ", " << y1 << "   ";
 				if (getpixel(x1, i + 100) == WHITE) {
 					while (getpixel(x1, i + 100) == WHITE) {
 						x1++;
@@ -62,7 +60,6 @@ void animateO() {
 void drawRectangle(int x, int y, double deg, int length, int width) { // Coordinate of top right rectangle point, degree of rotation, length (downwards), width (to the right)
 	setlinestyle(SOLID_LINE, 0, width);
 	line(x, y, int(sin(deg) * length) + x, int(cos(deg) * length) + y);
-	//cout << sin(deg) * length + x << ", " << cos(deg) * length + y << '\n';
 }
 
 int shiftLR = -100, radius = 90;
@@ -88,14 +85,13 @@ void writeO() {
 	int xrad = 120, yrad = 175, width = 48;
 	setcolor(WHITE); //outline color
 	ellipse(500, 275, 0, 360, xrad, yrad);
-	//setfillstyle(BKSLASH_FILL, DARKGRAY);
-	//fillellipse(500, 275, xrad, yrad);
 	setcolor(WHITE);
 	ellipse(500, 275, 0, 360, xrad - width, yrad - width);
 	setfillstyle(EMPTY_FILL, BLACK);
 	fillellipse(500, 275, xrad - width, yrad - width);
 }
 
+// Expansion/Contraction effect
 int pies = 80;
 bool ripple = 0, rev = 0;
 void animateR() {
@@ -140,6 +136,7 @@ void animateR() {
 	}
 }
 
+// Ripple effect
 void animateR2() {
 	int arcX = 0;
 	while (1) {
@@ -218,21 +215,29 @@ int main()
 	// Open a graphics window size 800 pixels wide x 600 pixels high
 	initwindow(800, 600);
 
-	// See "Graphics Functions Examples" on Canvas for list 
-	// of functions to use
-
-	// Here are two examples. Erase these and make your own
-	// It may be helpful to draw it on paper first
+	// Blinking cursor animation
 	typer();
+
+	// Draw first letter
 	writeR();
+
+	// Animate first letter (expansion/contraction & rippple effect)
 	thread th2(animateR);
 	thread th3(animateR2);
 	th2.detach();
 	th3.detach();
+
+	// New blinking cursor animation
 	typer2();
+
+	// Draw second letter
 	setlinestyle(SOLID_LINE, 0, 1);
 	writeO();
+
+	// Animate second letter (flow effect)
 	thread th1(animateO);
+
+	// Last blinking cursor animation
 	thread th4(typer3);
 	th1.detach();
 	th4.join();
